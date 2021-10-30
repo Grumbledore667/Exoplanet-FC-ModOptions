@@ -10,12 +10,13 @@ local gameOptions = require "global.gameOptions"
 local loadmodoptions = require "mods.modoptions"
 --+++++++++++++++++++++++++++++++++++++++++ /Mod ++++++++++++++++++++++++++++++++++++++++++++
 local stringio = require "pl.stringio"
+local filesystemUtils = require "filesystemUtils"
 local i18n = require "i18n"
+local lib = require "lib"
 
-_G.clear      = deb.clear
-_G.log        = deb.log
-_G.versionStr = deb.versionStr
-_G.versionInt = deb.versionInt
+require "global.log".register()
+
+_G.versionStr    = deb.versionStr
 _G.mainMenuParam = true
 
 
@@ -44,6 +45,8 @@ gameOptions.init()
 _G.setGameOption = gameOptions.setGameOption
 _G.getGameOption = gameOptions.getGameOption
 _G.getGameOptions = gameOptions.getGameOptions
+
+require "contentManager".load({strings = true})
 
 local guiContext = CEGUI.System:getSingleton():getDefaultGUIContext()
 local wndMgr     = CEGUI.WindowManager:getSingleton()
@@ -117,11 +120,6 @@ function dontShowLogos()
 end
 
 function OnInit()
-   for _, stringTable in ipairs(require "strings") do
-      i18n.load(stringTable)
-   end
-   i18n.setLocale("en")
-
    CEGUI.SchemeManager:getSingleton():createFromFile("TaharezLook.scheme")
    guiContext:setDefaultFont("venus rising rg-10")
 
@@ -276,7 +274,7 @@ function newLevel(args)
    addToPersistentTable("isLoadedGame", false)
    commitPersistentTable()
    trackPlay("Play_loadingscreen_1", 0)
-   changeLocation("\\levels\\WindscreamCanyon\\Windscream_Canyon.swz")
+   changeLocation("\\levels\\the_edge\\the_edge.swz")
 end
 
 function loadGameState(args)
